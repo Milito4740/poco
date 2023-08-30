@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
 
-        const { register, handleSubmit, formState : {errors} }= useForm();
+        const { register,
+           handleSubmit, 
+           formState : {errors} }= useForm();
         const { signup, isAuthenticathed, errors: RegisterErrors } = useAuth();
         const navigate = useNavigate();
 
@@ -15,22 +17,22 @@ function RegisterPage() {
           if(isAuthenticathed) navigate('/tasks');
         }, [isAuthenticathed, navigate])
         
+        const onSubmited = handleSubmit(async(values) => {
+          signup(values);//console.log(values);
+        })
   return (
     <div className='bg-zinc-800 max-w-md p-10 rounded-md'>
 
       {
-        RegisterErrors.map((error, i) => {
+        RegisterErrors.map((error, i) => (
             <div className='bg-red-500 text-white p-2' key={i} >
                 { error }
             </div>
 
-        })
+        ))
       }
 
-      <form onSubmit={handleSubmit(async (values) => {
-        signup(values);//console.log(values);
-       
-      } )}>
+      <form onSubmit={onSubmited}>
          <input type="text" {...register("username", {required:true})} placeholder='username' 
          className='w-full bg-zinc-600 text-white px-4 py-4 rounded-md my-2'/>
           {
